@@ -1,0 +1,178 @@
+<openerp>
+	<data>
+
+<!-- Fleet Vehicle -->
+		<record id="fleet_vehicle_inherit_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.inherit.form</field>
+			<field name="model">fleet.vehicle</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_form" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//form/sheet/group[1]/group[1]/field[@name='vin_sn']" position="after">
+					<field name='stnk'/>
+					<field name='bpkb'/>
+					<field name='kir'/>
+					<field name='nama_perusahaan'/>
+				</xpath>
+
+
+				<xpath expr="//form/sheet/group[1]/group[2]/field[@name='car_value']" position="after">
+					<field name='no_mesin'/>
+					<field name='tahun_pembuatan'/>
+					<field name="analytic_account" groups="analytic.group_analytic_accounting"/>
+					<field name="owner" domain="[('supplier','=',True)]"/>
+				</xpath>
+
+
+				<xpath expr="//form/sheet/group[2]/group[1]/field[@name='color']" position="after">
+					<field name='tipe_kendaraan'/>
+					<field name='sticker'/>
+					<field name='active'/>
+				</xpath>
+				
+				<xpath expr="//form/sheet/group[2]" position="after">
+					<group string="Kelengkapan Tools">
+						<field name="tools_ids" nolabel="1">
+							<tree string="Kelengkapan Tools" editable="bottom">
+								<field name="tool_id"/>
+								<field name="availability"/>
+								<field name="notes"/>
+							</tree>
+						</field>
+					</group>
+				</xpath>
+
+
+
+				<xpath expr="//form/sheet/group[1]/group[1]/field[@name='driver_id']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+				<xpath expr="//form/sheet/group[1]/group[1]/field[@name='location']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+				<xpath expr="//form/sheet/group[1]/group[2]/field[@name='car_value']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+				<xpath expr="//form/sheet/group[2]/group[1]/field[@name='seats']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+				<xpath expr="//form/sheet/group[2]/group[1]/field[@name='doors']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+
+				<xpath expr="//form/sheet/group[2]/group[2]/label[@for='co2']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				<xpath expr="//form/sheet/group[2]/group[2]/div[1]" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+
+				<xpath expr="//form/sheet/group[2]/group[2]/field[@name='horsepower']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+				<xpath expr="//form/sheet/group[2]/group[2]/field[@name='horsepower_tax']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+
+				<xpath expr="//form/sheet/group[2]/group[2]/label[@for='power']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				<xpath expr="//form/sheet/group[2]/group[2]/div[2]" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+
+  
+			</field>
+		</record>
+
+
+
+<!-- Fleet Vehicle Log Contract -->
+
+		<record id="fleet_vehicle_log_contract_inherit_tree" model="ir.ui.view">
+			<field name="name">fleet.vehicle.log.contract.inherit.tree</field>
+			<field name="model">fleet.vehicle.log.contract</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_log_contract_tree" />
+			<field name="arch" type="xml">
+
+				<tree position="attributes">
+					<attribute name="colors">red:days_left &lt;= 14; orange:days_left &gt;=15 and days_left &lt;= 30</attribute>
+				</tree>
+				<field name="expiration_date" position="after"><field name="date_computation" invisible="1"/></field>
+
+
+			</field>
+		</record>
+
+
+		<record id="fleet_vehicle_log_contract_inherit_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.log.contract.inherit.form</field>
+			<field name="model">fleet.vehicle.log.contract</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_log_contract_form" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//form/sheet/group[1]/group[1]/div/field[@name='cost_frequency']" position="attributes">
+					<attribute name="on_change">onchange_expired(cost_frequency,start_date)</attribute>
+				</xpath>
+
+
+				<xpath expr="//form/header/button[@name='contract_close']" position="before">
+					<button modifiers="{'invisible': [['state', '=', 'closed'],['state','=','open']]}" name="document_complete" states="open" type="object" class="oe_highlight" string="Document Completed" groups="fleet.group_fleet_manager"/>
+					<button modifiers="{'invisible': [['state', '=', 'closed']]}" name="contract_close" states="completed" type="object" class="oe_highlight" string="Terminate Contract" groups="fleet.group_fleet_manager"/>
+				</xpath>
+
+
+			</field>
+		</record>
+
+
+
+		<record id="fleet_vehicle_log_fuel_inherit_form" model="ir.ui.view">
+			<field name="name">fleet.vehicle.log.fuel.inherit.form</field>
+			<field name="model">fleet.vehicle.log.fuel</field>
+			<field name="inherit_id" ref="fleet.fleet_vehicle_log_fuel_form" />
+			<field name="arch" type="xml">
+
+				<xpath expr="//form/sheet/group[1]/group[1]/field[@name='vehicle_id']" position="after">
+					<field name="driver_id"/>
+				</xpath>
+
+
+				<xpath expr="//form/sheet/group[2]/group[1]/label[@for='odometer']" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+				<xpath expr="//form/sheet/group[2]/group[1]/div" position="attributes">
+					<attribute name='invisible'>1</attribute>
+				</xpath>
+
+				<xpath expr="//form/sheet/group[2]/group[1]" position="inside">
+					
+					<label for="current_odometer"/>
+					<div>
+						<field name="current_odometer" class="oe_inline"/>
+						<field name="odometer_unit" class="oe_inline"/>
+					</div>
+
+					<label for="last_odometer"/>
+					<div>
+						<field name="last_odometer" class="oe_inline"/>
+						<field name="odometer_unit1" class="oe_inline"/>
+					</div>
+
+				</xpath>
+
+			</field>
+		</record>
+
+
+	</data>
+</openerp>
